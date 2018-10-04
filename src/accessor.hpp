@@ -9,34 +9,42 @@
 #ifndef ACCESSOR_SRC_ACCESSOR_HPP
 #define ACCESSOR_SRC_ACCESSOR_HPP
 
-#include <string>
-#include <functional>
 
-template <typename ObjId>
-struct resultValue
+namespace accessor
 {
-    typedef typename ObjId::type type;
-    static type _ptr;
-};
+    template<typename T, typename C>
+    struct MemberWrapper
+    {
+      using type = T (C::*);
+    };
 
-template<typename ObjId>
-typename resultValue<ObjId>::type resultValue<ObjId>::_ptr;
+    template<typename R, typename C, typename... Args>
+    struct FunctionWrapper
+    {
+      using type = R (C::*)(Args...);
+    };
 
-template<typename ObjId, typename ObjId::type ptr>
-struct access : resultValue<ObjId>
-{
-  struct setter
-  {
-      setter()
-      {
-          resultValue<ObjId>::_ptr = ptr;
-      }
-  };
+    template<class T>
+    struct Proxy
+    {
+      static typename T::type value;
+    };
 
-  static setter _setter;
-};
+    template <class T>
+    typename T::type Proxy<T>::value;
 
-template<typename ObjId, typename ObjId::type ptr>
-typename access<ObjId, ptr>::setter access<ObjId, ptr>::_setter;
+    template<class T, typename T::type AccessPointer>
+    class MakeProxy
+    {
+        struct Setter { Setter() { Proxy<T>::value = AccessPointer; } };
+        static Setter instance;
+    };
+
+    template<class T, typename T::type AccessPointer>
+    typename MakeProxy<T, AccessPointer>::Setter MakeProxy<T, AccessPointer>::instance;
+
+    template<class T>
+    const auto accessEntity = Proxy<T>::value;
+}
 
 #endif // ACCESSOR_SRC_ACCESSOR_HPP

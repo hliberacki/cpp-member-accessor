@@ -1,38 +1,29 @@
 
 #include "accessor/accessor.hpp"
 #include <iostream>
+
+
 class Custom
 {
  public:
- Custom() : _private{1}{};
+ Custom() : mPriv{1}{}
  ~Custom() = default;
 
  private:
 
- int _private;
+ int mPriv;
  void privateF()
  {
    std::cout << "private method" << std::endl;
  }
 };
 
-struct CustomAccessed 
-{
-  typedef void(Custom::*type)();	
-}; 
+struct CustomF : accessor::FunctionWrapper<void, Custom> {};
+template class accessor::MakeProxy<CustomF, &Custom::privateF>;
 
-struct CustomAccessedInt
-{
-  typedef int(Custom::*type);
-};
-
-template class access<CustomAccessed, &Custom::privateF>;
-template class access<CustomAccessedInt, &Custom::_private>;
 int main()
 {
- Custom c;
- (c.*resultValue<CustomAccessed>::_ptr)(); 
- std::cout << c.*resultValue<CustomAccessedInt>::_ptr<<std::endl;
-  
+  Custom c;
+  (c.*accessor::accessEntity<CustomF>)();
   return 0;
 }
