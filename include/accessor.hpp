@@ -19,10 +19,16 @@ namespace accessor
       using type = T (C::*);
     };
 
-    template<typename R, typename C, typename... Args>
+    template<class C, class R, typename... Args>
     struct FunctionWrapper
     {
       using type = R (C::*)(Args...);
+    };
+
+    template<class C, class R, typename... Args>
+    struct ConstFunctionWrapper
+    {
+      using type = R (C::*)(Args...) const;
     };
 
     template<class Tag, class T>
@@ -48,7 +54,7 @@ namespace accessor
     const auto accessEntity = Proxy<T, T>::value;
 
     template<typename Sig, class Instance, typename... Args>
-    auto accessFunction(Instance & instance, Args ...args)
+    auto callFunction(Instance & instance, Args ...args)
     {
       return (instance.*accessEntity<Sig>)(args...);
     }
@@ -58,7 +64,24 @@ namespace accessor
     {
         return std::ref(instance.*accessEntity<Sig>);
     }
-
 }
+
+#define MAKE_FUNCTION_HELPER(...)                                           \
+  accessor::FunctionWrapper<__VA_ARGS__>
+
+#define MAKE_CONST_FUNCTION_HELPER(...)                                     \
+  accessor::ConstFunctionWrapper<__VA_ARGS__>
+
+#define CREATE_FUNCTION_ACCESSOR(accessor_name, base, method, ...)          \
+  using accessor_name = MAKE_FUNCTION_HELPER(base, __VA_ARGS__);            \
+  template class accessor::MakeProxy<accessor_name, &base::method>;
+
+#define CREATE_CONST_FUNCTION_ACCESSOR(accessor_name, base, method, ...)    \
+  using accessor_name = MAKE_CONST_FUNCTION_HELPER(base, __VA_ARGS__);      \
+  template class accessor::MakeProxy<accessor_name, &base::method>;
+
+#define CREATE_MEMBER_ACCESSOR(accessor_name, base, member, ret_type)       \
+  using accessor_name = accessor::MemberWrapper<ret_type, base>;            \
+  template class accessor::MakeProxy<accessor_name, &base::member>;
 
 #endif // ACCESSOR_SRC_ACCESSOR_HPP

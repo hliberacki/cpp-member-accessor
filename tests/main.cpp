@@ -1,51 +1,83 @@
 
 #include "accessor/accessor.hpp"
 #include <iostream>
+#include <vector>
 
-
-class Custom
+class Test
 {
- public:
- Custom() : mPriv{1}{}
- ~Custom() = default;
+public:
+  Test() = default;
+  Test(int i) : mFooBar{i} {}
 
- private:
+private:
+  void foo() { std::cout << "private method: Foo" << '\n'; }
 
- int mPriv;
- void privateF()
- {
-   std::cout << "private method" << std::endl;
- }
+  void bar(int i, double d)
+  {
+    std::cout << "private method: Bar. Args:[" << i << ", " << d << "]"<< '\n';
+  }
+
+  int getSum(int first, int second ) const { return first + second; }
+
+  int mFooBar {1};
 };
 
-struct CustomF : accessor::FunctionWrapper<void, Custom> {};
-struct CustomM : accessor::MemberWrapper<int, Custom> {};
-
-template class accessor::MakeProxy<CustomF, &Custom::privateF>;
-template class accessor::MakeProxy<CustomM, &Custom::mPriv>;
-
+CREATE_FUNCTION_ACCESSOR(TestFoo, Test, foo, void)
+CREATE_FUNCTION_ACCESSOR(TestBar, Test, bar, void, int, double)
+CREATE_CONST_FUNCTION_ACCESSOR(TestSum, Test, getSum, int, int, int)
+CREATE_MEMBER_ACCESSOR(TestFooBar, Test, mFooBar, int)
 
 int main()
 {
-  Custom c1, c2;
+  Test first;
 
-  std::cout << "Accessing C1 object" << "\n\n";
+  std::cout << "\nCalling private method foo():    ";
+  accessor::callFunction<TestFoo>(first);
 
-  std::cout << "privateF output:    ";
-  accessor::accessFunction<CustomF>(c1);
+  std::cout << "\nCalling private method bar(20, 30):    ";
+  accessor::callFunction<TestBar>(first, 20, 30);
 
-  std::cout << "C1.mPrivate value:    "<< accessor::accessMember<CustomM>(c1) << "\n\n";
+  std::cout << "\nCalling private method getSum(20, 30): ";
+  auto result = accessor::callFunction<TestSum>(first, 20, 30);
+  std::cout << "sum output: " << result << '\n';
 
-  std::cout << "Changing C1 C2 private member values" << "\n\n";
-  auto c1Member = accessor::accessMember<CustomM>(c1);
-  c1Member.get() = 1000;
+  std::cout << "\nPrinting value of private member mFooBar: "
+            << accessor::accessMember<TestFooBar>(first) << '\n';
 
-  std::cout << "New C1.mPrivate value: " << accessor::accessMember<CustomM>(c1) << '\n';
+  std::cout << "\nChanging mFooBar to 2000" << '\n';
+  auto foobar = accessor::accessMember<TestFooBar>(first);
+  foobar.get() = 2000;
 
-  auto c2Member = accessor::accessMember<CustomM>(c2);
-  c2Member.get() = 2000;
+  std::cout << "\nPrinting value of private member mFooBar: "
+            << accessor::accessMember<TestFooBar>(first) << '\n';
 
-  std::cout << "New C2.mPrivate value: " << accessor::accessMember<CustomM>(c2) << '\n';
+
+  std::cout << "\nApplying the same View for collection of Test objects, std::vector<Test>" << '\n';
+
+  std::vector<Test> testContainer =  {Test(0), Test(1)};
+
+  for(auto test : testContainer)
+  {
+      std::cout << "\nCalling private method foo():    ";
+      accessor::callFunction<TestFoo>(test);
+
+      std::cout << "\nCalling private method bar(20, 30):    ";
+      accessor::callFunction<TestBar>(test, 20, 30);
+
+      std::cout << "\nCalling private method getSum(20, 30): ";
+      auto result = accessor::callFunction<TestSum>(test, 20, 30);
+      std::cout << "\nsum output: " << result << '\n';
+
+      std::cout << "\nPrinting value of private member mFooBar: "
+                << accessor::accessMember<TestFooBar>(test) << '\n';
+
+      std::cout << "\nChanging mFooBar to 2000" << '\n';
+      auto foobar = accessor::accessMember<TestFooBar>(test);
+      foobar.get() = 2000;
+
+      std::cout << "\nPrinting value of private member mFooBar: "
+                << accessor::accessMember<TestFooBar>(test) << '\n';
+  }
 
   return 0;
 }
