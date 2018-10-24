@@ -7,8 +7,8 @@
 // MIT LICENSE : https://github.com/hliberacki/cpp-member-accessor/blob/master/LICENSE
 //************************************************************************************
 
-#ifndef ACCESSOR_SRC_ACCESSOR_HPP
-#define ACCESSOR_SRC_ACCESSOR_HPP
+#ifndef ACCESSOR_INCLUDE_ACCESSOR_HPP
+#define ACCESSOR_INCLUDE_ACCESSOR_HPP
 
 #include <functional>
 
@@ -73,16 +73,16 @@ namespace accessor
 #define CONST_FUNCTION_HELPER(...)                                     \
   accessor::ConstFunctionWrapper<__VA_ARGS__>
 
-#define FUNCTION_ACCESSOR(accessor_name, base, method, ...)          \
+#define FUNCTION_ACCESSOR(accessor_name, base, method, ...)            \
   using accessor_name = FUNCTION_HELPER(base, __VA_ARGS__);            \
   template class accessor::MakeProxy<accessor_name, &base::method>;
 
-#define CONST_FUNCTION_ACCESSOR(accessor_name, base, method, ...)    \
+#define CONST_FUNCTION_ACCESSOR(accessor_name, base, method, ...)      \
   using accessor_name = CONST_FUNCTION_HELPER(base, __VA_ARGS__);      \
   template class accessor::MakeProxy<accessor_name, &base::method>;
 
-#define MEMBER_ACCESSOR(accessor_name, base, member, ret_type)       \
-  using accessor_name = accessor::MemberWrapper<ret_type, base>;            \
+#define MEMBER_ACCESSOR(accessor_name, base, member, ret_type)         \
+  using accessor_name = accessor::MemberWrapper<ret_type, base>;       \
   template class accessor::MakeProxy<accessor_name, &base::member>;
 
-#endif // ACCESSOR_SRC_ACCESSOR_HPP
+#endif // ACCESSOR_INCLUDE_ACCESSOR_HPP
