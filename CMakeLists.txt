@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.6)
+cmake_minimum_required (VERSION 3.0)
 project(Accessor)
 
 add_library(accessor INTERFACE)
@@ -9,6 +9,11 @@ INSTALL (DIRECTORY ${CMAKE_SOURCE_DIR}/include/
          DESTINATION include/accessor
          FILES_MATCHING PATTERN "*.hpp*")
 
+#EXAMPLES
+if(${EXAMPLES})
+  set (CMAKE_CXX_STANDARD 14)
 
-set (CMAKE_CXX_STANDARD 14)
-add_executable(accessorUsage tests/main.cpp)
+  add_executable(accessFunctions examples/access_function.cpp)
+  add_executable(accessMembers examples/access_member.cpp)
+  add_executable(accessColletion examples/multiple_instances.cpp)
+endif()

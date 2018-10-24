@@ -1,10 +1,11 @@
-//****************************************************//
-// File accessor.hpp                                  //
-// Autor Hubert Liberacki (hliberacki@gmail.com)      //
-//****************************************************//
-
-// This is a simple library which provides functionality to access private and protected member, without neccessity of using
-// "friend" or define private/protected as public.
+//************************************************************************************
+// Copyright Hubert Liberacki (hliberacki@gmail.com)
+// Copyright Krzysztof Ostrowski
+//
+// Project home: https://github.com/hliberacki/cpp-member-accessor
+//
+// MIT LICENSE : https://github.com/hliberacki/cpp-member-accessor/blob/master/LICENSE
+//************************************************************************************
 
 #ifndef ACCESSOR_SRC_ACCESSOR_HPP
 #define ACCESSOR_SRC_ACCESSOR_HPP
@@ -66,21 +67,21 @@ namespace accessor
     }
 }
 
-#define MAKE_FUNCTION_HELPER(...)                                           \
+#define FUNCTION_HELPER(...)                                           \
   accessor::FunctionWrapper<__VA_ARGS__>
 
-#define MAKE_CONST_FUNCTION_HELPER(...)                                     \
+#define CONST_FUNCTION_HELPER(...)                                     \
   accessor::ConstFunctionWrapper<__VA_ARGS__>
 
-#define CREATE_FUNCTION_ACCESSOR(accessor_name, base, method, ...)          \
-  using accessor_name = MAKE_FUNCTION_HELPER(base, __VA_ARGS__);            \
+#define FUNCTION_ACCESSOR(accessor_name, base, method, ...)          \
+  using accessor_name = FUNCTION_HELPER(base, __VA_ARGS__);            \
   template class accessor::MakeProxy<accessor_name, &base::method>;
 
-#define CREATE_CONST_FUNCTION_ACCESSOR(accessor_name, base, method, ...)    \
-  using accessor_name = MAKE_CONST_FUNCTION_HELPER(base, __VA_ARGS__);      \
+#define CONST_FUNCTION_ACCESSOR(accessor_name, base, method, ...)    \
+  using accessor_name = CONST_FUNCTION_HELPER(base, __VA_ARGS__);      \
   template class accessor::MakeProxy<accessor_name, &base::method>;
 
-#define CREATE_MEMBER_ACCESSOR(accessor_name, base, member, ret_type)       \
+#define MEMBER_ACCESSOR(accessor_name, base, member, ret_type)       \
   using accessor_name = accessor::MemberWrapper<ret_type, base>;            \
   template class accessor::MakeProxy<accessor_name, &base::member>;
 
