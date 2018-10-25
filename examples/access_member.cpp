@@ -26,20 +26,20 @@ int main()
 {
   Test t;
 
-  std::cout << "\nPrinting value of private member mFoo:   "
+  std::cout << "\nmFoo             : "
             << accessor::accessMember<TestFoo>(t) << '\n';
 
-  std::cout << "\nChanging mFoo to:                         " << 2000 << '\n';
+  std::cout << "\nChanging mFoo to : " << 2000 << '\n';
   auto foobar = accessor::accessMember<TestFoo>(t);
   foobar.get() = 2000;
 
-  std::cout << "\nPrinting value of private member mFoo:    "
+  std::cout << "\nmFoo             : "
             << accessor::accessMember<TestFoo>(t) << '\n';
 
-  std::cout << "\nPrinting value of private member mBar:    "
+  std::cout << "\nmBar             : "
             << accessor::accessMember<TestBar>(t).get() << '\n';
 
-  std::cout << "\nPrinting value of private member mFooBar: "
+  std::cout << "\nmFooBar          : "
             << accessor::accessMember<TestFooBar>(t).get().mVal << '\n';
 
   std::cout << "\nmVec size: " << accessor::accessMember<TestVec>(t).get().size()

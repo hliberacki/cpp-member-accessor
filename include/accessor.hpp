@@ -14,7 +14,7 @@
 
 namespace accessor
 {
-    template<typename T, typename C>
+    template<typename C, typename T>
     struct MemberWrapper
     {
       using type = T (C::*);
@@ -82,7 +82,7 @@ namespace accessor
   template class accessor::MakeProxy<accessor_name, &base::method>;
 
 #define MEMBER_ACCESSOR(accessor_name, base, member, ret_type)         \
-  using accessor_name = accessor::MemberWrapper<ret_type, base>;       \
+  using accessor_name = accessor::MemberWrapper<base, ret_type>;       \
   template class accessor::MakeProxy<accessor_name, &base::member>;
 
 #endif // ACCESSOR_INCLUDE_ACCESSOR_HPP

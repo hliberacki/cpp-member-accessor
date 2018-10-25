@@ -28,21 +28,21 @@ int main()
 {
   Test t;
 
-  std::cout << "\nCalling private method foo():                  ";
+  std::cout << "\nfoo()                 : ";
   accessor::callFunction<TestFoo>(t);
 
-  std::cout << "\nCalling private method bar(20, 30):            ";
+  std::cout << "\nbar(20, 30)           : ";
   accessor::callFunction<TestBar>(t, 20, 30);
 
-  std::cout << "\nCalling private method getSum(20, 30):         ";
+  std::cout << "\ngetSum(20, 30)        : ";
   auto result = accessor::callFunction<TestSum>(t, 20, 30);
   std::cout << "sum output: " << result << '\n';
 
-  std::cout << "\nCalling private method max<int>(20, 30):       ";
+  std::cout << "\nmax<int>(20, 30)      : ";
   auto maxInt = accessor::callFunction<TestMaxInt>(t, 20, 30);
   std::cout  << maxInt << '\n';
 
-  std::cout << "\nCalling private method max<float>(0.7f, 0.5f): ";
+  std::cout << "\nmax<float>(0.7f, 0.5f): ";
   auto maxFloat = accessor::callFunction<TestMaxFloat>(t, 0.7f, 0.5f);
   std::cout  << maxFloat << '\n';
 
