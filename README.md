@@ -145,3 +145,7 @@ MEMBER_ACCESSOR(TypeForAccessing, BaseClass, nameOfMemberToAccess, MemberType)
 ```
 
 Rest is done the very same way as it was done without macros, using `callFunction` and `accessMember`
+
+## License
+
+[MIT License](https://github.com/hliberacki/cpp-member-accessor/blob/master/LICENSE)
