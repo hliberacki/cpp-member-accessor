@@ -9,6 +9,10 @@ _source: https://en.cppreference.com/w/cpp/language/class_template_
 
 The article describing implementation of this technique can be find [Here](https://github.com/insooth/insooth.github.io/blob/master/accessing-private-members.md)
 
+First reference to this technique is in [Johannes Schaub - litb blog](http://bloglitb.blogspot.com/2010/07/access-to-private-members-thats-easy.html?m=1)
+
+Herb Sutter [GotW blog post](http://www.gotw.ca/gotw/076.htm) why in general you should not access private members. Be wise and don't try to break things if u don't have to!
+
 ## Motivation
 
 This library is not meant to break any C++ design rules, even though it's fully legal from standard point of view. The purpose of this library is to use it when necessary within tests. Code shall be written in the way that it can be later tested, but as we all know in most cases and it especially applies to legacy code, there are situations where one need to access private member and no mocking can be applied anymore.
