@@ -93,7 +93,7 @@ using TestFooBar = ::accessor::MemberWrapper<Test, int>;
 template class ::accessor::MakeProxy<TestFooBar, &Test::mFooBar>;
 ```
 
-`MakProxy` takes as parameters `<CreatedType, MemberAddress>`
+`MakeProxy` takes as parameters `<CreatedType, MemberAddress>`
 
 After those steps we can simply call private `foo` method of class `Test`
 
