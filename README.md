@@ -22,18 +22,27 @@ In situations like that provided technique is far better than common `#define pr
 ## Installation
 
 Installation is done using CMake
-```
+```sh
 mkdir build
 cd build
 cmake ..
 make && make install
 ```
 
+## Importing Accessor as a target
+
+Installed Accessor library can be easily imported by any CMake based project
+```cmake
+find_package(accessor REQUIRED)
+# ...
+target_link_libraries(${exec_name} accessor)
+```
+
 ## Building examples
 
 There is set of mini [examples](https://github.com/hliberacki/cpp-member-accessor/tree/master/examples), which shows how various data members and methods can be accessed. To build them, the additional CMake flag shall be passed.
 
-```
+```sh
 cmake -DEXAMPLES=1 ..
 make
 ```
@@ -42,7 +51,7 @@ make
 
 There is set of [tests](https://github.com/hliberacki/cpp-member-accessor/tree/master/tests) using only CMake [CTest](https://cmake.org/cmake/help/v3.0/manual/ctest.1.html).
 
-```
+```sh
 make test
 ```
 ## Usage
