@@ -11,7 +11,7 @@ The article describing implementation of this technique can be find [Here](https
 
 First reference to this technique is in [Johannes Schaub - litb blog](http://bloglitb.blogspot.com/2010/07/access-to-private-members-thats-easy.html?m=1)
 
-Herb Sutter [GotW blog post](http://www.gotw.ca/gotw/076.htm) why in general you should not access private members. Be wise and don't try to break things if u don't have to!
+Herb Sutter [GotW blog post](http://www.gotw.ca/gotw/076.htm) why in general you should not access private members. Be wise and don't try to break things if you don't have to!
 
 ## Motivation
 
