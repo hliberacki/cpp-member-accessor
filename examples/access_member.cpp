@@ -12,12 +12,14 @@ struct Dummy
 class Test
 {
   int mFoo {1};
+  int mFoo2 {2};
   std::string mBar {"Hello World"};
   Dummy mFooBar;
   std::vector<int> mVec;
 };
 
 MEMBER_ACCESSOR(TestFoo, Test, mFoo, int)
+MEMBER_ACCESSOR(TestFoo2, Test, mFoo2, int)
 MEMBER_ACCESSOR(TestBar, Test, mBar, std::string)
 MEMBER_ACCESSOR(TestFooBar, Test, mFooBar, Dummy)
 MEMBER_ACCESSOR(TestVec, Test, mVec, std::vector<int>)
@@ -35,6 +37,9 @@ int main()
 
   std::cout << "\nmFoo             : "
             << accessor::accessMember<TestFoo>(t) << '\n';
+
+  std::cout << "\nmFoo2             : "
+            << accessor::accessMember<TestFoo2>(t) << '\n';
 
   std::cout << "\nmBar             : "
             << accessor::accessMember<TestBar>(t).get() << '\n';
