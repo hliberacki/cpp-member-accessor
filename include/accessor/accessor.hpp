@@ -74,15 +74,15 @@ namespace accessor
   accessor::ConstFunctionWrapper<__VA_ARGS__>
 
 #define FUNCTION_ACCESSOR(accessor_name, base, method, ...)            \
-  using accessor_name = FUNCTION_HELPER(base, __VA_ARGS__);            \
+  struct accessor_name : FUNCTION_HELPER(base, __VA_ARGS__) {};            \
   template class accessor::MakeProxy<accessor_name, &base::method>;
 
 #define CONST_FUNCTION_ACCESSOR(accessor_name, base, method, ...)      \
-  using accessor_name = CONST_FUNCTION_HELPER(base, __VA_ARGS__);      \
+  struct accessor_name : CONST_FUNCTION_HELPER(base, __VA_ARGS__) {};      \
   template class accessor::MakeProxy<accessor_name, &base::method>;
 
 #define MEMBER_ACCESSOR(accessor_name, base, member, ret_type)         \
-  using accessor_name = accessor::MemberWrapper<base, ret_type>;       \
+  struct accessor_name : accessor::MemberWrapper<base, ret_type> {};       \
   template class accessor::MakeProxy<accessor_name, &base::member>;
 
 #endif // ACCESSOR_INCLUDE_ACCESSOR_HPP

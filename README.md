@@ -89,7 +89,8 @@ using TestFoo = ::accessor::FunctionWrapper<Test, void>;
 using TestFooBar = ::accessor::MemberWrapper<Test, int>;
 ```
 
-Both ways are equal. `FunctionWrapper` takes types `<BaseClass, FunctionReturnType, FunctionArgsTypes...>`
+Accessing multiple members with the same type is only possible with the definition of a struct.
+`FunctionWrapper` takes types `<BaseClass, FunctionReturnType, FunctionArgsTypes...>`
 `MemberWrapper` works similar to `FunctionWrapper` it takes types `<BaseClass, MemberType>`
 
 Then __explicit template instantantion__ of created type `TestFoo` and `TestFooBar` shall be used 
