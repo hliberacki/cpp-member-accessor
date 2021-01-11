@@ -51,19 +51,16 @@ namespace accessor
     template<class T, typename T::type AccessPointer>
     typename MakeProxy<T, AccessPointer>::Setter MakeProxy<T, AccessPointer>::instance;
 
-    template<class T>
-    const auto accessEntity = Proxy<T, T>::value;
-
     template<typename Sig, class Instance, typename... Args>
     auto callFunction(Instance & instance, Args ...args)
     {
-      return (instance.*accessEntity<Sig>)(args...);
+      return (instance.*(Proxy<Sig, Sig>::value))(args...);
     }
 
     template<typename Sig, class Instance>
     auto accessMember(Instance & instance)
     {
-        return std::ref(instance.*accessEntity<Sig>);
+        return std::ref(instance.*(Proxy<Sig, Sig>::value));
     }
 }
 
