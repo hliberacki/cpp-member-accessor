@@ -52,9 +52,9 @@ namespace accessor
     typename MakeProxy<T, AccessPointer>::Setter MakeProxy<T, AccessPointer>::instance;
 
     template<typename Sig, class Instance, typename... Args>
-    decltype(auto) callFunction(Instance & instance, Args ...args)
+    decltype(auto) callFunction(Instance & instance, Args &&...args)
     {
-      return (instance.*(Proxy<Sig>::value))(args...);
+      return (instance.*(Proxy<Sig>::value))(std::forward<Args>(args)...);
     }
 
     template<typename Sig, class Instance>
