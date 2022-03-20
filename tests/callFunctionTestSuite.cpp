@@ -39,7 +39,7 @@ private:
   }
 
   template<typename T>
-  T max(T& lhs, T& rhs)
+  T max(const T& lhs, const T& rhs)
   {
     incrementMethodVisitedCounter("max");
     return (lhs > rhs) ? lhs : rhs;
@@ -100,7 +100,7 @@ bool callMultipleGetSum()
 }
 
 template<typename T>
-using TestMax = ::accessor::FunctionWrapper<Test, T, T&, T&>;
+using TestMax = ::accessor::FunctionWrapper<Test, T, const T&, const T&>;
 template class ::accessor::MakeProxy<TestMax<int>, &Test::max>;
 template class ::accessor::MakeProxy<TestMax<uint32_t>, &Test::max>;
 
