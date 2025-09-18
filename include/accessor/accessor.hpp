@@ -1,6 +1,7 @@
 //************************************************************************************
 // Copyright Hubert Liberacki (hliberacki@gmail.com)
 // Copyright Krzysztof Ostrowski
+// SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 //
 // Project home: https://github.com/hliberacki/cpp-member-accessor
 //
@@ -52,9 +53,9 @@ namespace accessor
     typename MakeProxy<T, AccessPointer>::Setter MakeProxy<T, AccessPointer>::instance;
 
     template<typename Sig, class Instance, typename... Args>
-    auto callFunction(Instance & instance, Args ...args)
+    auto callFunction(Instance & instance, Args&& ...args)
     {
-      return (instance.*(Proxy<Sig, Sig>::value))(args...);
+      return (instance.*(Proxy<Sig, Sig>::value))(std::forward<Args>(args)...);
     }
 
     template<typename Sig, class Instance>
