@@ -1,3 +1,10 @@
+# -----------------------------------------------------------------------------
+# Copyright (c) 2018- Hubert Liberacki
+# SPDX-License-Identifier: MIT
+#
+# Conan test recipe for cpp-member-accessor
+# -----------------------------------------------------------------------------
+
 import os
 
 from conan import ConanFile
@@ -24,4 +31,3 @@ class CppMemberAccessorTestConan(ConanFile):
         if can_run(self):
             cmd = os.path.join(self.cpp.build.bindir, "example")
             self.run(cmd, env="conanrun")
-            
