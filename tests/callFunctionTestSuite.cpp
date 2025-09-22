@@ -1,4 +1,13 @@
-﻿#include "test_helper.hpp"
+﻿//************************************************************************************
+// cpp-member-accessor
+//
+// Copyright (c) 2017- Hubert Liberacki <hliberacki@gmail.com>
+//
+// SPDX-License-Identifier: MIT
+// Project home: https://github.com/hliberacki/cpp-member-accessor
+//************************************************************************************
+
+#include "test_helper.hpp"
 #include <accessor/accessor.hpp>
 #include <iostream>
 #include <vector>

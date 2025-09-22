@@ -185,3 +185,7 @@ int main()
 ## License
 
 [MIT License](https://github.com/hliberacki/cpp-member-accessor/blob/master/LICENSE)
+
+## Acknowledgements
+
+Thanks to Krzysztof Ostrowski for early design input (see his related blog post).

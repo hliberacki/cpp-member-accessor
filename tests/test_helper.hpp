@@ -1,3 +1,12 @@
+//************************************************************************************
+// cpp-member-accessor
+//
+// Copyright (c) 2017- Hubert Liberacki <hliberacki@gmail.com>
+//
+// SPDX-License-Identifier: MIT
+// Project home: https://github.com/hliberacki/cpp-member-accessor
+//************************************************************************************
+
 #ifndef ACCESSOR_TESTS_TEST_HELPER_HPP
 #define ACCESSOR_TESTS_TEST_HELPER_HPP
 #include <iostream>
