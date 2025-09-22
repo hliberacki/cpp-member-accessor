@@ -1,5 +1,8 @@
 
 # Accessor
+
+[![CI](https://github.com/hliberacki/cpp-member-accessor/actions/workflows/ci_pipeline.yml/badge.svg)](https://github.com/hliberacki/cpp-member-accessor/actions/workflows/ci_pipeline.yml)
+
 Header only, fully template based library which enables accessing private data members. Techniques used by this library to achieve its  purpose are fully legal and allowed by the standard. 
 The library is based on __Explicit instantiation__ of __class template instantion__.
 
