@@ -46,8 +46,8 @@ bool changeValueOfSimpleMember()
 {
   Test t;
 
-  ::accessor::accessMember<TestFoo>(t).get() = 100;
-  ::accessor::accessMember<TestFoo2>(t).get() = 101;
+  ::accessor::accessMember<TestFoo>(t) = 100;
+  ::accessor::accessMember<TestFoo2>(t) = 101;
   return (::accessor::accessMember<TestFoo>(t) == 100)
       && (::accessor::accessMember<TestFoo2>(t) == 101);
 }
@@ -68,11 +68,11 @@ bool accessContainerType()
 
   for (uint8_t i = 0; i < testData.size(); ++i)
   {
-    testResult = testResult && (testData[i] == ::accessor::accessMember<TestFooBar>(t).get()[i]);
+    testResult = testResult && (testData[i] == ::accessor::accessMember<TestFooBar>(t)[i]);
   }
   for (uint8_t i = 0; i < testData2.size(); ++i)
   {
-    testResult = testResult && (testData2[i] == ::accessor::accessMember<TestFooBar2>(t).get()[i]);
+    testResult = testResult && (testData2[i] == ::accessor::accessMember<TestFooBar2>(t)[i]);
   }
 
   return testResult;
@@ -84,27 +84,27 @@ bool emplaceElementsToContainer()
   std::vector<int> testData = {0, 1, 2, 4, 5, 6, 7, 8, 9};
   std::vector<int> testData2 = {10, 11, 12, 14, 15, 16, 17, 18, 19};
 
-  auto refFooBar = ::accessor::accessMember<TestFooBar>(t);
+  auto& refFooBar = ::accessor::accessMember<TestFooBar>(t);
   for (auto item: testData)
   {
-    refFooBar.get().emplace_back(item);
+    refFooBar.emplace_back(item);
   }
 
-  auto refFooBar2 = ::accessor::accessMember<TestFooBar2>(t);
+  auto& refFooBar2 = ::accessor::accessMember<TestFooBar2>(t);
   for (auto item: testData2)
   {
-    refFooBar2.get().emplace_back(item);
+    refFooBar2.emplace_back(item);
   }
 
   bool testResult = true;
 
   for (uint8_t i = 0; i < testData.size(); ++i)
   {
-    testResult = testResult && (testData[i] == ::accessor::accessMember<TestFooBar>(t).get()[i]);
+    testResult = testResult && (testData[i] == ::accessor::accessMember<TestFooBar>(t)[i]);
   }
   for (uint8_t i = 0; i < testData2.size(); ++i)
   {
-    testResult = testResult && (testData2[i] == ::accessor::accessMember<TestFooBar2>(t).get()[i]);
+    testResult = testResult && (testData2[i] == ::accessor::accessMember<TestFooBar2>(t)[i]);
   }
 
   return testResult;

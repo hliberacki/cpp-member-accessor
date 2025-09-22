@@ -32,19 +32,19 @@ namespace accessor
       using type = R (C::*)(Args...) const;
     };
 
-    template<class Tag, class T>
+    template<class Tag>
     struct Proxy
     {
-      static typename T::type value;
+      static typename Tag::type value;
     };
 
-    template <class Tag, class T>
-    typename T::type Proxy<Tag, T>::value;
+    template <class Tag>
+    typename Tag::type Proxy<Tag>::value;
 
     template<class T, typename T::type AccessPointer>
     class MakeProxy
     {
-      struct Setter { Setter() { Proxy<T, T>::value = AccessPointer; } };
+      struct Setter { Setter() { Proxy<T>::value = AccessPointer; } };
       static Setter instance;
     };
 
@@ -52,15 +52,15 @@ namespace accessor
     typename MakeProxy<T, AccessPointer>::Setter MakeProxy<T, AccessPointer>::instance;
 
     template<typename Sig, class Instance, typename... Args>
-    auto callFunction(Instance & instance, Args ...args)
+    decltype(auto) callFunction(Instance & instance, Args &&...args)
     {
-      return (instance.*(Proxy<Sig, Sig>::value))(args...);
+      return (instance.*(Proxy<Sig>::value))(std::forward<Args>(args)...);
     }
 
     template<typename Sig, class Instance>
-    auto accessMember(Instance & instance)
+    decltype(auto) accessMember(Instance & instance)
     {
-        return std::ref(instance.*(Proxy<Sig, Sig>::value));
+        return instance.*(Proxy<Sig>::value);
     }
 }
 
