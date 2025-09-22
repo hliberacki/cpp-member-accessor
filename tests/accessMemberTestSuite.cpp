@@ -11,6 +11,7 @@
 #include <accessor/accessor.hpp>
 #include <iostream>
 #include <vector>
+#include <stdint.h>
 
 class Test
 {
