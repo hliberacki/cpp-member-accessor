@@ -18,3 +18,31 @@ jobs:
         run: cmake --build build --parallel
       - name: Test
         run: ctest --test-dir build --output-on-failure
+
+  conan:
+    name: Conan Support (Ubuntu)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Ninja
+        uses: seanmiddleditch/gha-setup-ninja@v5
+
+      - name: Install Conan
+        run: |
+          echo "/opt/pipx_bin" >> "$GITHUB_PATH"
+          pipx --version
+          pipx install "conan>=2.0,<3.0"
+          conan --version
+
+      - name: Cache Conan
+        uses: actions/cache@v4
+        with:
+          path: ~/.conan2
+          key: ${{ runner.os }}-conan2-${{ hashFiles('conanfile.py', 'CMakeLists.txt', 'include/**', 'tests/**', 'examples/**') }}
+
+      - name: Detect Conan profile
+        run: conan profile detect || true
+
+      - name: conan create (Release)
+        run: conan create . --version=0.2 -s build_type=Release
