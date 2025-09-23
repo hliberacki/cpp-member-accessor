@@ -7,24 +7,18 @@
 // Project home: https://github.com/hliberacki/cpp-member-accessor
 //************************************************************************************
 
-#ifndef ACCESSOR_TESTS_TEST_HELPER_HPP
-#define ACCESSOR_TESTS_TEST_HELPER_HPP
-#include <iostream>
-namespace testHelper
+#include <accessor/accessor.hpp>
+
+class Test
 {
-   inline static int & failedTests()
-   {
-     static int testFailed = 0;
-     return testFailed;
-   }
+  int mFooBar {1};
+};
 
-   void validateTest(bool expression)
-   {
-     if (!expression)
-        ++failedTests();
-   }
+using TestFooBar = accessor::MemberWrapper<Test, int>;
+template class accessor::MakeProxy<TestFooBar, &Test::mFooBar>;
+
+int main()
+{
+    Test t;
+    (void)accessor::accessMember<TestFooBar>(t);
 }
-
-#endif // ACCESSOR_TESTS_TEST_HELPER_HPP
-
-

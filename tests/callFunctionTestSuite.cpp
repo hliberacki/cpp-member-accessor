@@ -1,11 +1,11 @@
 ﻿//************************************************************************************
-// Copyright Hubert Liberacki (hliberacki@gmail.com)
-// Copyright Krzysztof Ostrowski
+// cpp-member-accessor
+//
+// Copyright (c) 2017- Hubert Liberacki <hliberacki@gmail.com>
+//
+// SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
-//
 // Project home: https://github.com/hliberacki/cpp-member-accessor
-//
-// MIT LICENSE : https://github.com/hliberacki/cpp-member-accessor/blob/master/LICENSE
 //************************************************************************************
 
 #include "test_helper.hpp"
@@ -15,6 +15,7 @@
 #include <map>
 #include <string>
 #include <algorithm>
+#include <stdint.h>
 
 class Test
 {
