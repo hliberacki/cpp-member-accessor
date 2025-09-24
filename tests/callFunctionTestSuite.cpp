@@ -4,6 +4,7 @@
 // Copyright (c) 2017- Hubert Liberacki <hliberacki@gmail.com>
 //
 // SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: Copyright (c) 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 // Project home: https://github.com/hliberacki/cpp-member-accessor
 //************************************************************************************
 
@@ -120,12 +121,14 @@ bool calOnceTemplatedMax()
   bool testResult = false;
 
   {
-    testResult = (::accessor::callFunction<TestMax<int>>(t, 10, 20) == 20) &&
+    int a = 10, b = 20;
+    testResult = (::accessor::callFunction<TestMax<int>>(t, a, b) == 20);
                  (t.getMethodVisitedCounter("max") > 0);
   }
 
   {
-    testResult = (::accessor::callFunction<TestMax<uint32_t>>(t, 100u, 200u) == 200u) &&
+    uint32_t c = 100u, d = 200u;
+    testResult = (::accessor::callFunction<TestMax<uint32_t>>(t, c, d) == 200u) &&
                  (t.getMethodVisitedCounter("max") > 1);
   }
 
@@ -141,7 +144,8 @@ bool calMultipleTemplatedMax()
 
   for (int i = 0; i < callsNumber; ++i)
   {
-    auto maxRes = ::accessor::callFunction<TestMax<int>>(t, i, callsNumber - i);
+    int temp = callsNumber - i;
+    auto maxRes = ::accessor::callFunction<TestMax<int>>(t, i, temp);
     testResult = (maxRes == std::max(i, callsNumber - i)) &&
                  (t.getMethodVisitedCounter("max") > i);
   }
