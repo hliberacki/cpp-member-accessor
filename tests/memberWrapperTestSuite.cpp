@@ -1,11 +1,8 @@
-//************************************************************************************
-// cpp-member-accessor
-//
-// Copyright (c) 2017- Hubert Liberacki <hliberacki@gmail.com>
-//
 // SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: Copyright (c) 2017-2025 Hubert Liberacki <hliberacki@gmail.com>
+//
+// cpp-member-accessor – header-only C++ library for accessing private members
 // Project home: https://github.com/hliberacki/cpp-member-accessor
-//************************************************************************************
 
 #include "test_helper.hpp"
 #include <accessor/accessor.hpp>
@@ -45,4 +42,3 @@ int main()
 
   return ::testHelper::failedTests();
 }
-
