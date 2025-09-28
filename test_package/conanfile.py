@@ -1,9 +1,7 @@
-# -----------------------------------------------------------------------------
-# Copyright (c) 2018- Hubert Liberacki
 # SPDX-License-Identifier: MIT
+# SPDX-FileCopyrightText: 2025 Hubert Liberacki
 #
-# Conan test recipe for cpp-member-accessor
-# -----------------------------------------------------------------------------
+# Conan recipe for cpp-member-accessor (header-only C++ library)
 
 import os
 
