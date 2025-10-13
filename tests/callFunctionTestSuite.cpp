@@ -40,14 +40,14 @@ private:
 
   void foo() { incrementMethodVisitedCounter("foo"); }
 
-  int getSum(int first, int second )
+  int getSum(int first, int second)
   {
     incrementMethodVisitedCounter("getSum");
     return first + second;
   }
 
-  template<typename T>
-  T max(T& lhs, T& rhs)
+  template <typename T>
+  T max(T &lhs, T &rhs)
   {
     incrementMethodVisitedCounter("max");
     return (lhs > rhs) ? lhs : rhs;
@@ -55,7 +55,6 @@ private:
 
   std::map<std::string, int> mVisitedMethods;
 };
-
 
 using TestFoo = ::accessor::FunctionWrapper<Test, void>;
 template class ::accessor::MakeProxy<TestFoo, &Test::foo>;
@@ -72,7 +71,7 @@ bool callMultipleSimpleFoo()
   Test t;
   int callsNumber = 10;
 
-  for (int i = 0; i < callsNumber; ++i )
+  for (int i = 0; i < callsNumber; ++i)
   {
     ::accessor::callFunction<TestFoo>(t);
   }
@@ -107,8 +106,8 @@ bool callMultipleGetSum()
   return testResult;
 }
 
-template<typename T>
-using TestMax = ::accessor::FunctionWrapper<Test, T, T&, T&>;
+template <typename T>
+using TestMax = ::accessor::FunctionWrapper<Test, T, T &, T &>;
 template class ::accessor::MakeProxy<TestMax<int>, &Test::max>;
 template class ::accessor::MakeProxy<TestMax<uint32_t>, &Test::max>;
 
@@ -119,7 +118,7 @@ bool calOnceTemplatedMax()
 
   {
     int a = 10, b = 20;
-    testResult = (::accessor::callFunction<TestMax<int>>(t, a, b) == 20);
+    testResult = (::accessor::callFunction<TestMax<int>>(t, a, b) == 20) &&
                  (t.getMethodVisitedCounter("max") > 0);
   }
 
@@ -131,7 +130,6 @@ bool calOnceTemplatedMax()
 
   return testResult;
 }
-
 
 bool calMultipleTemplatedMax()
 {
