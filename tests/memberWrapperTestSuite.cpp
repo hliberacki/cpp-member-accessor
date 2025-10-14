@@ -5,15 +5,16 @@
 // Project home: https://github.com/hliberacki/cpp-member-accessor
 
 #include "test_helper.hpp"
+#include "test_utils/compiler_attributes.hpp"
 #include <accessor/accessor.hpp>
 #include <iostream>
 #include <vector>
 
 class Test
 {
-  int mFoo;
-  const float mBar;
-  std::vector<int> mFooBar;
+  UNUSED int mFoo;
+  UNUSED const float mBar{3.14f};
+  UNUSED std::vector<int> mFooBar;
 };
 
 bool checkSignatureBasic()

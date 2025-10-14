@@ -1,7 +1,10 @@
 name: Build & Test
+
 on:
-  push: { branches: [ main, master ] }
+  push:
+    branches: [ main, master ]
   pull_request: {}
+
 jobs:
   build-and-test:
     runs-on: ${{ matrix.os }}
@@ -9,12 +12,80 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+        std: [14, 20, 23]
+        compiler: [gcc, clang]
+        exclude:
+          # macOS: Apple Clang only
+          - os: macos-latest
+            compiler: gcc
+          # Windows: use MSVC only
+          - os: windows-latest
+            compiler: gcc
+          - os: windows-latest
+            compiler: clang
+
+    name: ${{ matrix.os }} | C++${{ matrix.std }} | ${{ matrix.compiler }}
+
     steps:
       - uses: actions/checkout@v4
       - uses: seanmiddleditch/gha-setup-ninja@v5
+
+      - name: Setup compiler
+        run: |
+          if [[ "${{ runner.os }}" == "Linux" ]]; then
+            if [[ "${{ matrix.compiler }}" == "gcc" ]]; then
+              sudo apt update -y
+              sudo apt install -y g++-11
+              echo "CXX=g++-11" >> $GITHUB_ENV
+            else
+              sudo apt update -y
+              sudo apt install -y clang-15
+              echo "CXX=clang++-15" >> $GITHUB_ENV
+            fi
+          elif [[ "${{ runner.os }}" == "macOS" ]]; then
+            # Apple Clang is preinstalled and modern (LLVM-based)
+            echo "CXX=clang++" >> $GITHUB_ENV
+          else
+            # Windows automatically uses MSVC via CMake
+            echo "Using MSVC on Windows"
+          fi
+
+      - name: Print compiler info
+        run: |
+          cmake --version
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            cl
+          else
+            $CXX --version
+          fi
+
       - name: Configure
-        run: cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=ON
+        run: |
+          if [[ "${{ matrix.compiler }}" == "gcc" ]]; then
+            CMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -Werror -Wno-array-bounds"
+          else
+            CMAKE_CXX_FLAGS="-Wall -Wextra -Wpedantic -Werror"
+          fi
+          cmake -S . -B build -G Ninja \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_CXX_STANDARD=${{ matrix.std }} \
+          -DCMAKE_CXX_STANDARD_REQUIRED=ON \
+          -DBUILD_TESTING=ON \
+          -DEXAMPLES=ON \
+          -DCMAKE_CXX_FLAGS="$CMAKE_CXX_FLAGS"
+
       - name: Build
         run: cmake --build build --parallel
-      - name: Test
+
+      - name: Run tests
         run: ctest --test-dir build --output-on-failure
+
+      - name: Run examples
+        if: runner.os == 'Linux'
+        run: |
+          if [ -d build/examples ]; then
+            echo "Running examples..."
+            find build/examples -maxdepth 1 -type f -executable -print -exec {} \;
+          else
+            echo "No examples directory found."
+          fi

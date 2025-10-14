@@ -13,27 +13,27 @@ class Test
 
   void bar(int i, double d)
   {
-    std::cout << "private method: Bar. Args:[" << i << ", " << d << "]"<< '\n';
+    std::cout << "private method: Bar. Args:[" << i << ", " << d << "]" << '\n';
   }
 
-  int getSum(int first, int second ) const { return first + second; }
+  int getSum(int first, int second) const { return first + second; }
 
-  template<typename T>
-  T max(T& lhs, T& rhs) { return (lhs > rhs) ? lhs : rhs; }
+  template <typename T>
+  T max(T &lhs, T &rhs) { return (lhs > rhs) ? lhs : rhs; }
 
-  int mFooBar {1};
+  int mFooBar{1};
 };
 
-using TestFoo      = accessor::FunctionWrapper<Test, void>;
-using TestBar      = accessor::FunctionWrapper<Test, void, int, double>;
-using TestSum      = accessor::ConstFunctionWrapper<Test, int, int, int>;
-using TestMaxInt   = accessor::FunctionWrapper<Test, int, int&, int&>;
-using TestMaxFloat = accessor::FunctionWrapper<Test, float, float&, float&>;
+using TestFoo = accessor::FunctionWrapper<Test, void>;
+using TestBar = accessor::FunctionWrapper<Test, void, int, double>;
+using TestSum = accessor::ConstFunctionWrapper<Test, int, int, int>;
+using TestMaxInt = accessor::FunctionWrapper<Test, int, int &, int &>;
+using TestMaxFloat = accessor::FunctionWrapper<Test, float, float &, float &>;
 
-template<typename T>
-using TestMax      = accessor::FunctionWrapper<Test, T, T&, T&>;
+template <typename T>
+using TestMax = accessor::FunctionWrapper<Test, T, T &, T &>;
 
-using TestFooBar   = accessor::MemberWrapper<Test, int>;
+using TestFooBar = accessor::MemberWrapper<Test, int>;
 
 template class accessor::MakeProxy<TestFoo, &Test::foo>;
 template class accessor::MakeProxy<TestBar, &Test::bar>;
@@ -47,27 +47,40 @@ int main()
 {
   Test t;
 
-  std::cout << "\nfoo()                  : ";
-  accessor::callFunction<TestFoo>(t);
+  {
+    auto a = 20;
+    auto b = 30;
 
-  std::cout << "\nbar(20, 30)            : ";
-  accessor::callFunction<TestBar>(t, 20, 30);
+    std::cout << "\nfoo()                  : ";
+    accessor::callFunction<TestFoo>(t);
 
-  std::cout << "\ngetSum(20, 30)         : ";
-  auto result = accessor::callFunction<TestSum>(t, 20, 30);
-  std::cout << "sum output: " << result << '\n';
+    std::cout << "\nbar(20, 30)            : ";
+    accessor::callFunction<TestBar>(t, a, b);
 
-  std::cout << "\nmax<int>(20, 30)       : ";
-  auto maxInt = accessor::callFunction<TestMaxInt>(t, 20, 30);
-  std::cout  << maxInt << '\n';
+    std::cout << "\ngetSum(20, 30)         : ";
+    auto result = accessor::callFunction<TestSum>(t, a, b);
+    std::cout << "sum output: " << result << '\n';
 
-  std::cout << "\nmax<float>(0.7f, 0.5f) : ";
-  auto maxFloat = accessor::callFunction<TestMaxFloat>(t, 0.7f, 0.5f);
-  std::cout  << maxFloat << '\n';
+    std::cout << "\nmax<int>(20, 30)       : ";
+    auto maxInt = accessor::callFunction<TestMaxInt>(t, a, b);
+    std::cout << maxInt << '\n';
+  }
 
-  std::cout << "\nmax<double>(0.37, 0.56): ";
-  auto maxDouble = accessor::callFunction<TestMax<double>>(t, 0.37, 0.56);
-  std::cout  << maxDouble << '\n';
+  {
+    auto a = 0.7f;
+    auto b = 0.5f;
+    std::cout << "\nmax<float>(0.7f, 0.5f) : ";
+    auto maxFloat = accessor::callFunction<TestMaxFloat>(t, a, b);
+    std::cout << maxFloat << '\n';
+  }
+
+  {
+    auto a = 0.37;
+    auto b = 0.56;
+    std::cout << "\nmax<double>(0.37, 0.56): ";
+    auto maxDouble = accessor::callFunction<TestMax<double>>(t, a, b);
+    std::cout << maxDouble << '\n';
+  }
 
   std::cout << "\nmFooBar                : " << accessor::accessMember<TestFooBar>(t)
             << '\n';

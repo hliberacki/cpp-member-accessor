@@ -41,19 +41,34 @@ endif()
 
 #TESTS
 enable_testing()
-add_executable(functionWrapperTestSuite tests/functionWrapperTestSuite.cpp)
-target_link_libraries(functionWrapperTestSuite accessor)
+include(CTest)
 
-add_executable(memberWrapperTestSuite tests/memberWrapperTestSuite.cpp)
-target_link_libraries(memberWrapperTestSuite accessor)
+set(TEST_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/tests/test_utils)
 
-add_executable(callFunctionTestSuite tests/callFunctionTestSuite.cpp)
-target_link_libraries(callFunctionTestSuite accessor)
+set(TEST_SOURCES
+    tests/functionWrapperTestSuite.cpp
+    tests/memberWrapperTestSuite.cpp
+    tests/callFunctionTestSuite.cpp
+    tests/accessMemberTestSuite.cpp
+)
 
-add_executable(accessMemberTestSuite tests/accessMemberTestSuite.cpp)
-target_link_libraries(accessMemberTestSuite accessor)
+foreach(test_src ${TEST_SOURCES})
+    get_filename_component(test_name ${test_src} NAME_WE)
+    add_executable(${test_name} ${test_src})
+    target_link_libraries(${test_name} PRIVATE accessor)
+    target_include_directories(${test_name} PRIVATE ${TEST_INCLUDE_DIR})
 
-add_test(functionWrapperTests functionWrapperTestSuite)
-add_test(memberWrapperTests memberWrapperTestSuite)
-add_test(callFunctionTest callFunctionTestSuite)
-add_test(accessMemberTest accessMemberTestSuite)
+    if(MSVC)
+        target_compile_options(${test_name} PRIVATE /W4 /WX)
+    else()
+        target_compile_options(${test_name} PRIVATE -Wall -Wextra -Werror)
+
+         # Suppress known GCC false positive on -Warray-bounds
+        if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+            target_compile_options(${test_name} PRIVATE -Wno-array-bounds)
+        endif()
+    endif()
+
+
+    add_test(NAME ${test_name} COMMAND ${test_name})
+endforeach()

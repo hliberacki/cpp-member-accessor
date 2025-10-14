@@ -187,6 +187,27 @@ int main()
 }
 ```
 
+## GCC warning note
+
+When building with GCC 10 or newer, you might encounter a false-positive diagnostic similar to:
+
+```
+error: array subscript ‘int (**)(...)[0]’ is partly outside array bounds [...]
+```
+
+This originates from an over-aggressive `-Warray-bounds` check introduced in GCC 10, which can be triggered by
+template-based or pointer-to-member expressions used internally by this library.
+
+This is not a real issue and does not indicate undefined behavior. It is a known GCC false positive
+(see https://gcc.gnu.org/bugzilla/show_bug.cgi?id=107699).
+
+To prevent example or test builds from failing when compiling with
+`-Wall -Wextra -Wpedantic -Werror`, this specific warning can be safely suppressed using:
+
+```bash
+-Wno-array-bounds
+```
+
 ## License
 
 [MIT License](https://github.com/hliberacki/cpp-member-accessor/blob/master/LICENSE)
