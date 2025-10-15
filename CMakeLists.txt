@@ -6,17 +6,17 @@ include(GNUInstallDirs)
 set(library_name accessor)
 add_library(${library_name} INTERFACE)
 target_include_directories(${library_name} INTERFACE
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-	$<INSTALL_INTERFACE:include>)
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>)
 
 install(TARGETS accessor EXPORT ${library_name}Config
-	ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	RUNTIME  DESTINATION ${CMAKE_INSTALL_BINDIR}) # For Windows
+    ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME  DESTINATION ${CMAKE_INSTALL_BINDIR}) # For Windows
 
 install(DIRECTORY include/
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-        FILES_MATCHING PATTERN "*.hpp*")
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    FILES_MATCHING PATTERN "*.hpp*")
 
 install(EXPORT ${library_name}Config DESTINATION share/${library_name}/cmake)
 
@@ -28,15 +28,19 @@ if(${EXAMPLES})
 
   add_executable(accessFunctions examples/access_function.cpp)
   target_link_libraries(accessFunctions accessor)
+  set_target_properties(accessFunctions PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/examples)
 
   add_executable(accessMembers examples/access_member.cpp)
   target_link_libraries(accessMembers accessor)
+  set_target_properties(accessMembers PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/examples)
 
   add_executable(accessColletion examples/multiple_instances.cpp)
   target_link_libraries(accessColletion accessor)
+  set_target_properties(accessColletion PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/examples)
 
   add_executable(accessNoMacro examples/no_macro.cpp)
   target_link_libraries(accessNoMacro accessor)
+  set_target_properties(accessNoMacro PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/examples)
 endif()
 
 #TESTS
