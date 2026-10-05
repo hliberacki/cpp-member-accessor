@@ -18,6 +18,12 @@ First reference to this technique is in [Johannes Schaub - litb blog](http://blo
 
 Herb Sutter [GotW blog post](http://www.gotw.ca/gotw/076.htm) why in general you should not access private members. Be wise and don't try to break things if you don't have to!
 
+## Recognition
+
+* **[NVIDIA Aerial](https://github.com/NVIDIA/aerial-framework)** - included and attributed in [ATTRIBUTION.md](https://github.com/NVIDIA/aerial-framework/blob/main/ATTRIBUTION.md#cpp-member-accessor).
+* **[ACCU On Sea 2026](https://accuonsea.uk/2026/sessions/opening-the-black-box-legally-testing-private-members-in-cpp/)** — presented in "*Opening the Black Box: Legally Testing Private Members in C++*". [[Slides](https://github.com/Digital-Medium/ACCU-On-Sea-Slides-2026/blob/main/Presentations/Opening_the_Black_Box.pdf)], [[ACCU Overload trip report](https://accu.org/journals/overload/34/194/dargo/)], Recording to be updated.
+* **[San Diego C++ Meetup #79](https://vorbrodt.blog/2025/10/23/san-diego-c-meetup-meeting-79-october-2025-edition-hosting-hubert-liberacki/)** — "*Cracking Open the Black Box: Legally Testing the Privates in C++*". [[Recording](https://youtu.be/YVJm_7wznqY?si=jZ0unBk8Z22RmQo_)]
+
 ## Motivation
 
 This library is not meant to break any C++ design rules, even though it's fully legal from standard point of view. The purpose of this library is to use it when necessary within tests. Code shall be written in the way that it can be later tested, but as we all know in most cases and it especially applies to legacy code, there are situations where one need to access private member and no mocking can be applied anymore.
